@@ -16,7 +16,7 @@ div#superfinder p input {
 	background: white;
 }
 
-div#superfinder ul { list-style: none; margin: 10px 0 0 0px; }
+div#superfinder ul { list-style: none; margin: 10px 0 0 0px; padding: 0px; }
 
 div#superfinder li { 
 	background: #dff5f8;

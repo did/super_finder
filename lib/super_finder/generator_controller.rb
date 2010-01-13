@@ -72,10 +72,10 @@ class SuperFinder::GeneratorController < ApplicationController
     case url
     when Hash, nil
       url = (SuperFinder::Config.instance.url || {}).merge(url || {})
-      controller_name = entry.class.name.pluralize.underscore
+      resource_name = entry.class.name.pluralize.underscore
       
       url_for({
-        :controller => File.join([url[:name_prefix], controller_name].compact),
+        :controller => File.join(['/', url[:name_prefix], resource_name].compact),
         :action     => url[:action].to_sym ,
         :id         => entry.id
       })

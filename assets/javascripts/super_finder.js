@@ -19,7 +19,7 @@ function SuperFinder(options) {
 		return false;
 	});
 	
-	this.options.button.click(function(event) {
+	jQuery(this.options.button).click(function(event) {
 		self.open();
 		event.preventDefault();
 		return false;

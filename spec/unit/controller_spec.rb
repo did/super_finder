@@ -55,12 +55,12 @@ describe SuperFinder::GeneratorController do
   end
   
   it 'should generate an url' do
-    @controller.expects(:url_for).with({ :controller => 'admin/projects', :action => :edit, :id => 42 })
+    @controller.expects(:url_for).with({ :controller => '/admin/projects', :action => :edit, :id => 42 })
     @controller.send(:entry_url, @entry, { :klass => Project })
   end
   
   it 'should generate an url from an Hash option' do
-    @controller.expects(:url_for).with({ :controller => 'projects', :action => :show, :id => 42 })
+    @controller.expects(:url_for).with({ :controller => '/projects', :action => :show, :id => 42 })
     @controller.send(:entry_url, @entry, { :klass => Project, :url => { :name_prefix => nil, :action => 'show' } })
   end
   
