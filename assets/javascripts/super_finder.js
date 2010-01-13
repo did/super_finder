@@ -76,7 +76,7 @@ SuperFinder.prototype = {
 		if (this.boxy == null) {
 			this.boxy = new Boxy(jQuery('#superfinder'), { 
 				title: this.options.title,
-				closeText: "<img src=\"/images/admin/icons/close.png\" alt=\"[close]\" />"
+				closeText: "<img src=\"/images/super_finder/close.png\" alt=\"[close]\" />"
 			});
 			this.input.focus();
 		} else {

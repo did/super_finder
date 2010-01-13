@@ -20,10 +20,10 @@
 	
 	/* IE6+7 hacks for the border. IE7 should support this natively but fails in conjuction with modal blackout bg. */
 	/* NB: these must be absolute paths or URLs to your images */
-	.boxy-wrapper .top-left { #background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/plugins/boxy-nw.png'); }
-	.boxy-wrapper .top-right { #background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/plugins/boxy-ne.png'); }
-	.boxy-wrapper .bottom-right { #background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/plugins/boxy-se.png'); }
-	.boxy-wrapper .bottom-left { #background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/plugins/boxy-sw.png'); }
+	.boxy-wrapper .top-left { #background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/super_finder/boxy-nw.png'); }
+	.boxy-wrapper .top-right { #background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/super_finder/boxy-ne.png'); }
+	.boxy-wrapper .bottom-right { #background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/super_finder/boxy-se.png'); }
+	.boxy-wrapper .bottom-left { #background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/super_finder/boxy-sw.png'); }
 	
 	.boxy-wrapper .top,
 	.boxy-wrapper .bottom { height: 10px; background-color: black; opacity: 0.6; filter: alpha(opacity=60); padding: 0 }
