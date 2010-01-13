@@ -1,6 +1,8 @@
 require 'fileutils'
 
-RAILS_ROOT = File.expand_path( File.join(File.dirname(__FILE__), '../../../') )
+unless defined?(RAILS_ROOT)
+  RAILS_ROOT = File.expand_path( File.join(File.dirname(__FILE__), '../../../') )
+end
 
 ['images', 'stylesheets', 'javascripts'].each do |folder|
   if folder == 'images'
