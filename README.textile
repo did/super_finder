@@ -193,7 +193,7 @@ h2. Demo
 
 A big thank you at Heroku's people for their awesome service.
 
-http://superfinder.heroku.com
+"http://superfinder.heroku.com":http://superfinder.heroku.com
 
 h2. Tests / Bugs / Evolutions
 
