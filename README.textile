@@ -1,0 +1,209 @@
+h1. SuperFinder
+
+TextMate’s "cmd-T" functionality right in your ruby on rails application. Results in the popup come from models you choose. Almost everything can be re-defined to match your needs.
+
+I strongly suggest you to check our demo application to see how it looks.
+
+h2. Pre-requisities
+
+ActiveRecord as ORM, jQuery and jQuery boxy plugin.
+
+h2. Installation
+
+For now, only installation as a plugin is available.
+Even if there are multiple steps to pass before using it, the installation is pretty simple.
+
+<pre>
+	script/plugin install ....
+</pre>
+
+Then, in your config/routes.rb, just add at the end of your file the following statement:
+
+<pre>
+	SuperFinder::Routes.draw(map)
+</pre>
+
+Register an new observer in config/environment.rb (or add it to your existing observers list). This observer is responsible for sweeping the cache.
+
+<pre>
+	config.active_record.observers = 'super_finder/cache_sweeper'
+</pre>
+
+Define the behavior of the plugin by creating an initializer file (initializers/super_finder.rb for instance)
+
+<pre>
+	SuperFinder::Initializer.run do |config|
+	  config.models = [
+	    { :klass => Project, :column => :title },
+	    { :klass => Person, :column => :nickname }
+	  ]
+	end
+</pre>
+
+Next, inside your application layout, just before the closing BODY tag, add this:
+
+<pre>
+	<%= super_finder_tag %>
+</pre>
+
+Include the javascript and stylesheets files
+
+<pre>
+	<%= javascript_include_tag 'superfinder.js' %>
+	<%= javascript_include_tag 'superfinder.css' %>
+</pre>
+
+Finally, put into your application.js
+
+<pre>	
+	new SuperFinder({ button: $('#your-button a') })	
+</pre>
+
+_Note: button is optional since we set up a shortcut *(ALT-T)*
+
+That's it !!!
+
+h2. Usage
+
+There are 2 ways to display the popup and begin to search for something
+
+* Press ALT and t in your browser.
+* if you provide a css selector for *button* (see previous section), just click the button
+
+Then, it's pretty straigth forward, type some letters and use your keyboard arrows to select your item. Once you're done, press ENTER.
+
+You may want to change the color assigned to a label. Just add the following lines in one of your stylesheet files
+
+<pre>
+	div#superfinder li.project label { background-color: #64992c; }
+	div#superfinder li.task label { background-color: #5a6986; }
+	div#superfinder li.person label { background-color: #ec7000; }
+	div#superfinder li.account label { background-color: #5229a3; }
+</pre>
+
+h2. How it works ?
+
+Thru its own controller, SuperFinder generates on the fly a js file storing by model all the records it found.
+It means some important things:
+
+* It best fits for small collections of records. Not to fetch all the customers of an important e-commerce back-office.
+* Authentication and before_filter constraints can be applied. It prevents not authorized people to sneak at data.
+
+The javascript output is just a single statement; it assigns the previous collection to a global javascript variable.
+Then, a jquery uses this variable to emulate the same behaviour of the TextMate’s "cmd-T" functionality
+
+
+h2. More settings
+
+Instead of writing hundred or thousands lines, I prefer to show you some examples:
+
+h3. Simple one
+
+<pre>
+	SuperFinder::Initializer.run do |config|
+	  config.models = [
+	    { :klass => Project, :column => :title },
+	    { :klass => Person, :column => :nickname }
+	  ]
+	end
+</pre>
+
+Let's say you have a project in db whose title is "Ruby on Rails" and id is 42. If you type, "ru" in the popup, "Ruby on Rails" will appear and if you press ENTER, you will be redirected to *project_url(42)*.
+Simple, isn't it ?
+
+
+h3. I18n
+
+For each entry displayed in the popup, a little label precising the model type is also displayed as well.
+By default, SuperFinder will find the translation of *activerecord.models.<your model>* and if it's missing humanize the model class name. But you can also define it !
+
+<pre>
+	SuperFinder::Initializer.run do |config|
+	  config.models = [
+	    { :klass => Project, :label => 'My fancy projects', :column => :title },
+	    { :klass => Task, :label => Proc.new { |controller| "blablabla" }, :column => :title },
+	    { :klass => Person, :column => :nickname }
+	  ]
+	end
+</pre>
+
+h3. Urls
+
+When pressing enter, you are redirected to the url of the selected entry. For each model, you can define your own url strategy.
+
+<pre>
+	SuperFinder::Initializer.run do |config|
+		config.url = {
+	    :name_prefix  => 'admin',
+	    :action       => :edit # by default, :show
+	  }
+	  config.models = [
+	    { :klass => Project, :column => :title, :url => { :action => :show, :name_prefix =>nil } },
+			{ :klass => Task, :column => :title },
+			{ :klass => Person, :column => :nickname, :url => Proc.new { |controller, person| controller.my_url(person) } }
+	  ]
+	end
+</pre>
+
+Generated urls will be:
+
+* *project_url(<project_id>)*
+* *edit_admin_task_url(<project_id>)*
+* *edit_admin_task_url(<project_id>)*
+* *my_url(<project_id>)*
+
+h3. Scoping / finder
+
+Sometimes, one of your model is scoped and bound to an account for instance. The scoper object is generally retrieved from the controller based on subdomain.
+SuperFinder allows you to use the scoper to find entries.
+
+<pre>
+	SuperFinder::Initializer.run do |config|
+		config.scoper = {
+			:column_id => :account_id,
+			:getter => :current_account # name of controller method returning the scoper instance
+		}
+	  config.models = [
+	    { :klass => Project, :column => :title },
+			{ :klass => Person, :column => :nickname, :scoper => false }
+			{ :klass => Task, :column => :title, :finder => Proc.new { |controller| Task.active.all } }
+	  ]
+	end
+</pre>
+
+h3. Controller filtering
+
+Of course, you do not want bad people sneak at your data. No problems, here is the solution
+
+<pre>
+	SuperFinder::Initializer.run do |config|
+		config.before_filters = [:must_be_authenticated]
+	  config.models = [
+	    { :klass => Project, :column => :title },
+	    { :klass => Person, :column => :nickname }
+	  ]
+	end
+</pre>
+
+_Note: before_filters does not work in development mode for some class reloading issues.
+
+h2. Demo
+
+A big thank you at Heroku's people for their awesome service.
+
+http://superfinder.heroku.com
+
+h2. Tests / Bugs / Evolutions
+
+The plugin is fully tests with rspec (unit / functional tests). Into the plugin folder, type 
+
+<pre>
+	rake
+</pre>
+
+You may find bugs, sure you will actually. If you have time to investigate and solve them, just apply the classic procedure (fork, fix, test and submit).
+
+For evolutions, you're welcome to suggest your ideas. Contact me at didier at nocoffee dot fr.
+
+
+Copyright (c) 2010 NoCoffee, released under the MIT license
