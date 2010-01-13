@@ -46,11 +46,11 @@ Next, inside your application layout, just before the closing BODY tag, add this
 <%= super_finder_tag %>
 </pre>
 
-Include the javascript and stylesheets files
+Include the javascript and stylesheets files (do not forget to include jQuery as well):
 
 <pre>
-<%= stylesheet_link_tag 'superfinder' %>
-<%= javascript_include_tag 'boxy', 'superfinder' %>
+<%= stylesheet_link_tag 'super_finder' %>
+<%= javascript_include_tag 'boxy', 'super_finder' %>
 </pre>
 
 Finally, put into your application.js
@@ -124,7 +124,7 @@ SuperFinder::Initializer.run do |config|
   config.models = [
     { :klass => Project, :label => 'My fancy projects', :column => :title },
     { :klass => Task, :label => Proc.new { |controller| "blablabla" }, :column => :title },
-    { :klass => Person, :column => :nickname }
+    { :klass => Person, :column => Proc.new { |p| p.full_name } }
   ]
 end
 </pre>
