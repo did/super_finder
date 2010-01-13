@@ -1,7 +1,5 @@
 require 'fileutils'
 
-RAILS_ROOT = File.expand_path( File.join(File.dirname(__FILE__), '../../../') )
-
 ['images', 'stylesheets', 'javascripts'].each do |folder|
   if folder == 'images'
     unless FileTest.exist? File.join(RAILS_ROOT, 'public', 'images', 'super_finder')
