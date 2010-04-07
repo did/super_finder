@@ -16,7 +16,8 @@ Gem::Specification.new do |s|
     "README.textile"
   ]
   s.files = [
-    "MIT-LICENSE",
+    ".gitignore",
+     "MIT-LICENSE",
      "README.textile",
      "Rakefile",
      "VERSION",
@@ -53,6 +54,7 @@ Gem::Specification.new do |s|
      "spec/unit/controller_spec.rb",
      "spec/unit/initializer_spec.rb",
      "spec/unit/unit_spec_helper.rb",
+     "super_finder.gemspec",
      "tasks/super_finder_tasks.rake",
      "uninstall.rb"
   ]
